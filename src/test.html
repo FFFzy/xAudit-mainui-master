@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!--<img src="http://localhost:8080/ipfs/Qmc68XbQtHo7DHB6tBNFJuncwjmfYxFDcQ9WEvdvvVzdcZ?filename=test.jpeg" alt="test.jpeg">-->
+<div>
+    <input id="cid" type="text" placeholder="输入CID">
+    <input id="download" type="button" value="download">
+</div>
+<ul id="gateway-list"></ul>
+</body>
+<script>
+    var gateways = [
+        "https://ipfs.io/ipfs/",
+        "https://dweb.link/ipfs/",
+        "https://gateway.ipfs.io/ipfs/",
+        "https://ipfs.infura.io/ipfs/",
+        "https://ninetailed.ninja/ipfs/",
+        "https://ipfs.globalupload.io/",
+        "https://10.via0.com/ipfs/",
+        "https://ipfs.eternum.io/ipfs/",
+        "https://hardbin.com/ipfs/",
+        "https://gateway.blocksec.com/ipfs/",
+        "https://cloudflare-ipfs.com/ipfs/",
+        "https://astyanax.io/ipfs/",
+        "https://cf-ipfs.com/ipfs/",
+        "https://ipns.co/ipfs/",
+        "https://ipfs.mrh.io/ipfs/",
+        "https://gateway.originprotocol.com/ipfs/",
+        "https://gateway.pinata.cloud/ipfs/",
+        "https://ipfs.doolta.com/ipfs/",
+        "https://ipfs.sloppyta.co/ipfs/",
+        "https://ipfs.busy.org/ipfs/",
+        "https://ipfs.greyh.at/ipfs/",
+        "https://gateway.serph.network/ipfs/",
+        "https://jorropo.ovh/ipfs/",
+        "https://jorropo.net/ipfs/",
+        "https://gateway.temporal.cloud/ipfs/",
+        "https://ipfs.fooock.com/ipfs/",
+        "https://cdn.cwinfo.net/ipfs/",
+        "https://ipfs.privacytools.io/ipfs/",
+        "https://permaweb.io/ipfs/",
+        "https://ipfs.stibarc.com/ipfs/",
+        "https://ipfs.best-practice.se/ipfs/",
+        "https://2read.net/ipfs/",
+        "https://ipfs.2read.net/ipfs/",
+        "https://storjipfs-gateway.com/ipfs/",
+        "https://ipfs.runfission.com/ipfs/",
+        "https://trusti.id/ipfs/",
+        "https://apac.trusti.id/ipfs/",
+        "https://ipfs.overpi.com/ipfs/",
+        "https://gateway.ipfs.lc/ipfs/",
+        "https://ipfs.leiyun.org/ipfs/",
+        "https://ipfs.ink/ipfs/",
+        "https://ipfs.oceanprotocol.com/ipfs/",
+        "https://d26g9c7mfuzstv.cloudfront.net/ipfs/",
+        "https://ipfsgateway.makersplace.com/ipfs/",
+        "https://gateway.ravenland.org/ipfs/",
+        "https://ipfs.smartsignature.io/ipfs/",
+        "https://ipfs.funnychain.co/ipfs/",
+        "https://ipfs.telos.miami/ipfs/",
+        "https://robotizing.net/ipfs/",
+        "https://ipfs.mttk.net/ipfs/",
+        "https://ipfs.fleek.co/ipfs/",
+        "https://ipfs.jbb.one/ipfs/",
+        "https://ipfs.yt/ipfs/",
+        "https://jacl.tech/ipfs/",
+        "https://hashnews.k1ic.com/ipfs/",
+        "https://ipfs.vip/ipfs/",
+        "https://ipfs.k1ic.com/ipfs/",
+        "https://ipfs.drink.cafe/ipfs/",
+        "https://ipfs.azurewebsites.net/ipfs/",
+        "https://gw.ipfspin.com/ipfs/",
+        "https://ipfs.kavin.rocks/ipfs/",
+        "https://ipfs.denarius.io/ipfs/",
+        "https://ipfs.mihir.ch/ipfs/",
+        "https://bluelight.link/ipfs/",
+        "https://crustwebsites.net/ipfs/",
+        "https://trusted-setup.filecoin.io/ipfs/",
+        "http://3.211.196.68:8080/ipfs/",
+        "https://ipfs0.sjc.cloudsigma.com/ipfs/",
+        "https://ipfs-tezos.giganode.io/ipfs/",
+        "http://183.252.17.149:82/ipfs/",
+        "http://ipfs.genenetwork.org/ipfs/",
+        "https://ipfs.eth.aragon.network/ipfs/",
+        "https://ipfs.smartholdem.io/ipfs/",
+        "https://bin.d0x.to/ipfs/",
+        "https://ipfs.xoqq.ch/ipfs/",
+        "https://birds-are-nice.me/ipfs/",
+        "http://natoboram.mynetgear.com:8080/ipfs/",
+        "https://ipfs.foxgirl.dev/ipfs/",
+        "https://video.oneloveipfs.com/ipfs/",
+        "http://ipfs.anonymize.com/ipfs/",
+        "https://ipfs.noormohammed.tech/ipfs/",
+        "https://ipfs.taxi/ipfs/",
+        "https://ipfs.scalaproject.io/ipfs/",
+        "https://search.ipfsgate.com/ipfs/",
+        "https://ipfs.itargo.io/ipfs/",
+        "https://ipfs.decoo.io/ipfs/"
+    ]
+    $("#download").click(function () {
+        var cid = $("#cid").val()
+        for (var i = 0; i < gateways.length; i++) {
+            $.ajax({
+                type: "OPTIONS",
+                url: gateways[i] + cid,
+                complete: function (req, status) {
+                    if (status === "success") {
+                        $("#gateway-list").append(
+                            '<li><a href="' + this.url + '">' + this.url + '</a></li>'
+                        )
+                    }
+                }
+            })
+        }
+    })
+</script>
+</html>
