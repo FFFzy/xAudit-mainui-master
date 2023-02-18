@@ -106,7 +106,7 @@ $(document).ready(function () {
       "http://localhost:8099/" +
       $("#response").val() +
       "/" +
-      $("#contractName").val() +
+      $("#response").val() +
       ".pdf"; // Replace with the URL of your file
     console.log(fileUrl);
     var xhr = new XMLHttpRequest();
