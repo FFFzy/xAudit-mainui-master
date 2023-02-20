@@ -120,7 +120,7 @@ $(document).ready(function () {
         // Create a link element with the download attribute and click it to trigger the download
         var link = document.createElement("a");
         link.href = window.URL.createObjectURL(xhr.response);
-        link.download = $("#contractName").val() + ".pdf"; // Replace with the desired filename
+        link.download = $("#response").val() + ".pdf"; // Replace with the desired filename
         link.click();
       }
     };
