@@ -58,8 +58,8 @@ export default {
                 // XAudit
                 setStartButton: "Go to Audit!",
                 setAchievementsTitle: "Our Achievements",
-                setHomeTextTitle0: "The most professional and well-",
-                setHomeTextTitle1: "performed auditing techniques",
+                setHomeTextTitle0: "Our Advantage",
+                // setHomeTextTitle1: "performed auditing techniques",
 
                 setHomeTextSubtitle0: "Professional team",
                 setHomeTextContent0: "Our team focuses on the security of smart contracts for years. And more than 10 phd students are doing related research ",
@@ -71,9 +71,12 @@ export default {
                 setHomeTextContent3: "We support a pdf exported reports for users with professional recommendations for every vulnerabilities",
 
                 setHomeTextSubtitle4: "Our Publications",
-                setHomeTextContent4: "Our techniques are accepted in top conferences and journals",
+                setHomeTextContent4: "Techniques in top conferences and journals",
                 setHomeTextContent5: "ISSTA 2022",
                 setHomeTextContent6: "ASE 2022",
+                setHomeTextContent7: "[ISSTA 2022]: Park",
+                setHomeTextContent8: "[ISSTA 2022]: SmartDagger",
+                setHomeTextContent9: "[ASE   2022]: RLF",
 
                 setOurPartners: "Our Partners",
                 setOurPartnersContent: "We are dedicated to incooperate with companies",

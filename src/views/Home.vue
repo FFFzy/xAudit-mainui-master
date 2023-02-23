@@ -2,11 +2,11 @@
   <NavFooter>
     <div class="container" style="margin-top: 150px;margin-bottom: 50px">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; height: 100%;">
           <div class="col-md-6 text-center">
             <img src="../assets/XAudit_home.png" alt="" style="width: 80%;height: 80%">
           </div>
-          <div class="col-md-6 pull-left">
+          <div class="col-md-6 pull-left" style="display: flex; flex-direction: column; height: 100%;">
 <!--            <h3>e<span class="text-primary">X</span>plore <span class="text-primary">Block</span>chain-->
 <!--              Reliability</h3>-->
 <!--            <h1>XBLOCK.PRO</h1>-->
@@ -14,12 +14,14 @@
             <h1>Smart Contracts Security</h1>
             <h1>Guard</h1>
             <span class="btn-op">
+              <router-link to="/audit">
               <JumpButton
                   :color="'btn-primary'"
                   :func-jump="''"
                   :info="$t('message.home.setStartButton')"
                   style="margin-right: 5px"
               ></JumpButton>
+              </router-link>
             </span>
 <!--            <p style="margin-top: 30px">{{ $t("message.home.introduction1") }}</p>-->
 <!--            <p style="margin-top: 30px">{{ $t("message.home.introduction2") }}</p>-->
@@ -70,71 +72,66 @@
     <section class="about_us section-padding">
       <div class="container">
         <div class="row">
-          <div class="section-title wow zoomIn">
+          <div class="section-title wow zoomIn text-center">
             <h2><span>{{ $t("message.home.setHomeTextTitle0") }}</span></h2>
-            <h2><span>{{ $t("message.home.setHomeTextTitle1") }}</span></h2>
-          </div>
-          <div class="row"></div>
-          <div class="col-md-12">
-            <div class="col-md-6 pull-left">
-              <h3>
-                <span>{{ $t("message.home.setHomeTextSubtitle0") }}</span>
-              </h3>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent0") }}</span>
-              </h5>
-              <div class="row"></div>
-              <h3>
-                <span>{{ $t("message.home.setHomeTextSubtitle2") }}</span>
-              </h3>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent2") }}</span>
-              </h5>
-            </div>
-            <div class="col-md-6 pull-left">
-              <h3>
-                <span>{{ $t("message.home.setHomeTextSubtitle1") }}</span>
-              </h3>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent1") }}</span>
-              </h5>
-              <div class="row"></div>
-              <h3>
-                <span>{{ $t("message.home.setHomeTextSubtitle3") }}</span>
-              </h3>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent3") }}</span>
-              </h5>
-            </div>
-          </div>
 
-        </div><!--- END ROW -->
-      </div><!--- END CONTAINER -->
+            <div></div>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="about-item">
+                  <h3 class="about-item__title">{{ $t("message.home.setHomeTextSubtitle0") }}</h3>
+                  <p class="about-item__text">{{ $t("message.home.setHomeTextContent0") }}</p>
+                </div>
+                <div class="about-item">
+                  <h3 class="about-item__title">{{ $t("message.home.setHomeTextSubtitle2") }}</h3>
+                  <p class="about-item__text">{{ $t("message.home.setHomeTextContent2") }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="about-item">
+                  <h3 class="about-item__title">{{ $t("message.home.setHomeTextSubtitle1") }}</h3>
+                  <p class="about-item__text">{{ $t("message.home.setHomeTextContent1") }}</p>
+                </div>
+                <div class="about-item">
+                  <h3 class="about-item__title">{{ $t("message.home.setHomeTextSubtitle3") }}</h3>
+                  <p class="about-item__text">{{ $t("message.home.setHomeTextContent3") }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="counter_feature">
-      <div class="container" style="margin-top: 150px;margin-bottom: 50px">
+      <div class="container">
         <div class="row">
-          <div class="col-md-12">
+          <div class="section-title wow zoomIn text-center">
+            <h2><span>{{ $t("message.home.setHomeTextSubtitle4") }}</span></h2>
+            <div></div>
+          </div>
+          <div class="col-md-12" style="display: flex; justify-content: center; align-items: center; height: 100%;">
             <div class="col-md-6 text-center">
-              <img src="../assets/home_temp.png" alt="" style="width: 80%;height: 80%">
+              <img src="../assets/publication.jpg" alt="" style="width: 100%;height: 100%">
             </div>
-            <div class="col-md-6 pull-left">
-              <h3>
-                <span>{{ $t("message.home.setHomeTextSubtitle4") }}</span>
-              </h3>
-              <h5>
+            <div class="col-md-6 pull-left" style="display: flex; flex-direction: column; height: 100%;">
+              <h3 class="about-item__title">
                 <span>{{ $t("message.home.setHomeTextContent4") }}</span>
-              </h5>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent5") }}</span>
-              </h5>
-              <h5>
-                <span>{{ $t("message.home.setHomeTextContent6") }}</span>
-              </h5>
-              <h5>
+              </h3>
+              <p class="about-item_publications_text">
+                <span>{{ $t("message.home.setHomeTextContent7") }}</span>
+              </p>
+              <p class="about-item_publications_text">
+                <span>{{ $t("message.home.setHomeTextContent8") }}</span>
+              </p>
+              <p class="about-item_publications_text">
+                <span>{{ $t("message.home.setHomeTextContent9") }}</span>
+              </p>
+              <p class="about-item_publications_text">
                 <span>......</span>
-              </h5>
+              </p>
             </div>
           </div>
         </div>
@@ -149,32 +146,31 @@
             <div></div>
           </div>
 
-          <div class="section-title wow zoomIn">
-            <h3><span>{{ $t("message.home.setOurPartnersContent") }}</span></h3>
+          <div class="section-subtitle wow zoomIn">
+            <h3 class="about_us__subtitle"><span>{{ $t("message.home.setOurPartnersContent") }}</span></h3>
           </div>
 
-          <div class="text-center">
-            <img src="../assets/WeBankLogo.png" alt="" style="width: 30%;height: 30%">
-          </div>
+<!--          <div class="text-center">-->
+<!--            <img src="../assets/partners/WeBankLogo.png" alt="WeBank Logo" class="about_us__logo">-->
+<!--          </div>-->
 
-          <div class="col-md-12">
-            <div class="col-md-3 text-center">
-              <img src="../assets/partner_temp.png" alt="" style="width: 70%;height: 70%">
+          <div class="col-md-12" style="display: flex; justify-content: space-between;">
+            <div class="col-md-3 text-center" style="display: flex; justify-content: space-between; align-self:center">
+              <img src="../assets/partners/antlogo.png" alt="Partner" class="about_us__partner" style="width: 100%;">
             </div>
-            <div class="col-md-3 text-center">
-              <img src="../assets/partner_temp.png" alt="" style="width: 70%;height: 70%">
+            <div class="col-md-3 text-center" style="display: flex; justify-content: space-between; align-self:center">
+              <img src="../assets/partners/huaweilogo.png" alt="Partner" class="about_us__partner" style="width: 100%;">
             </div>
-            <div class="col-md-3 text-center">
-              <img src="../assets/partner_temp.png" alt="" style="width: 70%;height: 70%">
+            <div class="col-md-3 text-center" style="display: flex; justify-content: space-between; align-self:center">
+              <img src="../assets/partners/WeBankLogo.png" alt="Partner" class="about_us__partner" style="width: 100%;">
             </div>
-            <div class="col-md-3 text-center">
-              <img src="../assets/partner_temp.png" alt="" style="width: 70%;height: 70%">
+            <div class="col-md-3 text-center" style="display: flex; justify-content: space-between; align-self:center">
+              <img src="../assets/partners/tencentlogo.jpg" alt="Partner" class="about_us__partner" style="width: 100%;">
             </div>
           </div>
-        </div><!--- END ROW -->
-      </div><!--- END CONTAINER -->
+        </div>
+      </div>
     </section>
-
   </NavFooter>
 </template>
 
@@ -213,4 +209,68 @@ export default {
 .pointer {
   cursor: pointer;
 }
+
+/* Our Advantage*/
+.about-item {
+  margin-bottom: 50px;
+  text-align: left;
+}
+
+.about-item__title {
+  color: #555;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+.about-item__text {
+  color: #888;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.about-item_publications_text {
+  color: #888;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 10px;
+}
+
+@media (max-width: 767px) {
+  .about-item {
+    margin-bottom: 30px;
+  }
+
+  .about-item__title {
+    font-size: 20px;
+  }
+
+  .about-item__text {
+    font-size: 14px;
+  }
+}
+
+/* Our Partners*/
+.about_us__subtitle {
+  font-size: 24px;
+  margin-bottom: 50px;
+  color: #555;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.about_us__logo {
+  width: 30%;
+  height: auto;
+  margin-bottom: 50px;
+}
+
+.about_us__partner {
+  width: 70%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
 </style>
