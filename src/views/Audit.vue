@@ -16,31 +16,16 @@
           </div>
 
           <div>
-            <!-- <input
-              type="file"
-              id="files"
-              name="file"
-              @change="getFile($event)"
-              class="uploadFile"
-            />
-            <button
-              type="button"
-              class="btn btn-default"
-              data-dismiss="modal"
-              @click="submit()"
-            >
-              Commit
-            </button> -->
-            <form id="myForm">
-              <input type="file" name="file" />
+            <form id="myForm" ref="myForm" @submit.prevent="uploadFile">
+<!--              <input type="file" name="file" class="upload-input" />-->
+<!--              <input type="text" name="contractName" id="contractName" />-->
+<!--              <input type="submit" value="Upload" />-->
+              <input type="file" name="file" ref="fileInput"  />
               <input type="text" name="contractName" id="contractName" />
 
               <input type="submit" value="Upload" />
             </form>
-            <label for="response">Hash for download:</label>
-            <input type="text" id="response" />
 
-            <button id="download-button">Download Data</button>
           </div>
         </div>
         <!--- END ROW -->
@@ -63,6 +48,12 @@
               <span>{{ $t("message.audit.setStep2Content") }}</span>
             </h3>
           </div>
+          <div id="step2">
+            <label for="response">Hash for download:</label>
+            <input type="text" id="response" ref="responseInput" />
+
+            <button id="download-button" class="download" @click="downloadFile">Download PDF</button>
+          </div>
         </div>
         <!--- END ROW -->
       </div>
@@ -77,63 +68,112 @@ import JumpButton from "../components/buttons/JumpButton.vue";
 // import { upload } from "../api/audit.js";
 import confs from "../confs";
 import { onMounted, reactive } from "vue";
+import axios from 'axios';
+import { ref } from 'vue';
 
 export default {
   title: "Audit",
-  components: { NavFooter, JumpButton },
+  components: { NavFooter },
   setup() {
-    $(document).ready(function () {
-      $("#myForm").submit(function (event) {
-        event.preventDefault();
-        var formData = new FormData(this);
+    const fileInput = ref(null);
+    const responseInput = ref(null);
 
-        $.ajax({
-          url: confs.backendsURL + "/audit/upload",
-          type: "POST",
-          data: formData,
-          cache: false,
-          contentType: false,
-          processData: false,
-          success: function (data) {
-            console.log("File uploaded successfully");
-            console.log(data);
-            $("#response").val(data);
-          },
-          error: function (xhr, status, error) {
-            console.log("Error uploading file");
-          },
-        });
+    const uploadFile = () => {
+      const formData = new FormData();
+      formData.append('file', fileInput.value.files[0]);
+
+      axios.post(confs.backendsURL + "/audit/upload", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(response => {
+        console.log('File uploaded successfully');
+        console.log(response.data);
+        responseInput.value.value = response.data;
+      }).catch(error => {
+        console.log('Error uploading file');
       });
+    };
 
-      $("#download-button").click(function () {
-        var fileUrl =
-            "http://localhost:8099/" +
-            $("#response").val() +
-            "/" +
-            $("#response").val() +
-            ".pdf"; // Replace with the URL of your file
-        console.log(fileUrl);
-        var xhr = new XMLHttpRequest();
+    const downloadFile = () => {
+      const fileUrl = "http://localhost:8099/" + responseInput.value.value + "/" + responseInput.value.value + ".pdf";
+      console.log(fileUrl);
 
-        // Set the response type to blob to handle binary data
-        xhr.responseType = "blob";
-
-        // Set up the onload event to handle the response
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            // Create a link element with the download attribute and click it to trigger the download
-            var link = document.createElement("a");
-            link.href = window.URL.createObjectURL(xhr.response);
-            link.download = $("#response").val() + ".pdf"; // Replace with the desired filename
-            link.click();
-          }
-        };
-
-        // Send the request
-        xhr.open("GET", fileUrl);
-        xhr.send();
+      axios.get(fileUrl, {
+        responseType: 'blob'
+      }).then(response => {
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', responseInput.value.value + '.pdf');
+          link.click();
+        }
+      }).catch(error => {
+        console.log('Error downloading file');
       });
-    });
+    };
+
+    return {
+      fileInput,
+      responseInput,
+      uploadFile,
+      downloadFile
+    };
+
+
+    // $(document).ready(function () {
+    //   $("#myForm").submit(function (event) {
+    //     event.preventDefault();
+    //     var formData = new FormData(this);
+    //
+    //     $.ajax({
+    //       url: confs.backendsURL + "/audit/upload",
+    //       type: "POST",
+    //       data: formData,
+    //       cache: false,
+    //       contentType: false,
+    //       processData: false,
+    //       success: function (data) {
+    //         console.log("File uploaded successfully");
+    //         console.log(data);
+    //         $("#response").val(data);
+    //       },
+    //       error: function (xhr, status, error) {
+    //         console.log("Error uploading file");
+    //       },
+    //     });
+    //   });
+    //
+    //   $("#download-button").click(function () {
+    //     var fileUrl =
+    //         "http://localhost:8099/" +
+    //         $("#response").val() +
+    //         "/" +
+    //         $("#response").val() +
+    //         ".pdf"; // Replace with the URL of your file
+    //     console.log(fileUrl);
+    //     var xhr = new XMLHttpRequest();
+    //
+    //     // Set the response type to blob to handle binary data
+    //     xhr.responseType = "blob";
+    //
+    //     // Set up the onload event to handle the response
+    //     xhr.onload = function () {
+    //       if (xhr.status === 200) {
+    //         // Create a link element with the download attribute and click it to trigger the download
+    //         var link = document.createElement("a");
+    //         link.href = window.URL.createObjectURL(xhr.response);
+    //         link.download = $("#response").val() + ".pdf"; // Replace with the desired filename
+    //         link.click();
+    //       }
+    //     };
+    //
+    //     // Send the request
+    //     xhr.open("GET", fileUrl);
+    //     xhr.send();
+    //   });
+    // });
   },
 };
 
@@ -151,10 +191,74 @@ export default {
 </script>
 
 <style scoped>
-.btn-op {
-  margin: 5px;
+/* 样式可以根据需要进行修改 */
+#myForm {
+  margin: 20px auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.uploadFile {
-  /* display: none; */
+
+#myForm input[type="file"],
+#myForm input[type="text"],
+#myForm input[type="submit"] {
+  display: block;
+  margin: 10px 0;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#myForm input[type="submit"] {
+  background-color: #248054;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#myForm input[type="submit"]:hover {
+  background-color: #248054;
+}
+
+#step2{
+  margin: 20px auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#response {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#download-button {
+  margin-top: 20px;
+  padding: 10px;
+  width: 100%;
+  background-color: #248054;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#download-button:hover {
+  background-color: #248054;
+}
+
+.upload-label span {
+  margin-left: 10px;
 }
 </style>

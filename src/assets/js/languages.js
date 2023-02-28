@@ -86,7 +86,7 @@ export default {
                 setStep1:"Step 1: Commit",
                 setStep1Content:"Please input a .zip file containing source code files.",
                 setStep2:"Step 2: Audit",
-                setStep2Content:"After committing and auditing, you will get result here."
+                setStep2Content:"After committing and auditing, you will get hash of result here."
             },
             searchPanel: {
                 secSearchInputTitle: "Search",
