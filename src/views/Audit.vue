@@ -20,7 +20,17 @@
 <!--              <input type="file" name="file" class="upload-input" />-->
 <!--              <input type="text" name="contractName" id="contractName" />-->
 <!--              <input type="submit" value="Upload" />-->
-              <input type="file" name="file" ref="fileInput"  />
+
+<!--              <input type="file" name="file" ref="fileInput" style="display:none"/>-->
+
+              <div class="divFileInput" >
+                <label for="file-upload" class="custom-file-upload">
+                  <i class="fa fa-cloud-upload"></i> Choose File
+                </label>
+                <input id="file-upload" type="file" @change="onFileSelected" ref="fileInput" style="display:none">
+                <input type="text" :value="selectedFileName" placeholder="No file selected" readonly >
+              </div>
+
               <input type="text" name="contractName" id="contractName" />
 
               <input type="submit" value="Upload" />
@@ -114,11 +124,24 @@ export default {
       });
     };
 
+    const selectedFileName = ref('');
+
+    const onFileSelected = (event) => {
+      const files = event.target.files;
+      if (files.length > 0) {
+        selectedFileName.value = files[0].name;
+      } else {
+        selectedFileName.value = '';
+      }
+    };
+
     return {
       fileInput,
       responseInput,
       uploadFile,
-      downloadFile
+      downloadFile,
+      selectedFileName,
+      onFileSelected,
     };
 
 
@@ -191,7 +214,6 @@ export default {
 </script>
 
 <style scoped>
-/* 样式可以根据需要进行修改 */
 #myForm {
   margin: 20px auto;
   width: 400px;
@@ -201,9 +223,9 @@ export default {
   align-items: center;
 }
 
-#myForm input[type="file"],
+/*#myForm input[type="file"],*/
 #myForm input[type="text"],
-#myForm input[type="submit"] {
+#myForm input[type="submit"]{
   display: block;
   margin: 10px 0;
   width: 100%;
@@ -211,6 +233,14 @@ export default {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+#myForm div{
+  display: block;
+  margin: 10px 0;
+  width: 100%;
+  font-size: 16px;
+  border: none;
 }
 
 #myForm input[type="submit"] {
@@ -261,4 +291,36 @@ export default {
 .upload-label span {
   margin-left: 10px;
 }
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.custom-file-upload:hover {
+  background-color: #f5f5f5;
+}
+
+.fa-cloud-upload {
+  margin-right: 5px;
+}
+
+.divFileInput{
+  position: relative;
+  width: 100%;
+  /*background-color: #f1f1f1;*/
+}
+
+.divFileInput label{
+  position: absolute;
+  top: 14px;
+  right: 3px;
+  background-color: #fff;
+  border: none;
+  outline: none;
+}
+
 </style>
