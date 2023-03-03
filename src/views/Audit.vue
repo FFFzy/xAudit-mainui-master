@@ -91,6 +91,7 @@ export default {
     const uploadFile = () => {
       const formData = new FormData();
       formData.append('file', fileInput.value.files[0]);
+      formData.append('contractName', $("#contractName").val());
 
       axios.post(confs.backendsURL + "/audit/upload", formData, {
         headers: {

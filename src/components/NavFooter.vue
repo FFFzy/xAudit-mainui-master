@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
         </button>
         <router-link to="/" class="navbar-brand" style="margin-top: 10px">
-          <img src="../assets/XAudit_Logo.png" alt="logo">
+          <img src="../assets/xaudit.png" alt="logo">
         </router-link>
       </div>
       <div class="navbar-collapse collapse">
