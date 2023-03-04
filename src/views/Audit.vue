@@ -59,8 +59,8 @@
             </h3>
           </div>
           <div id="step2">
-            <label for="response">Hash for download:</label>
-            <input type="text" id="response" ref="responseInput" />
+            <label for="hash-input">Hash for download:</label>
+            <input type="text" id="hash-input" ref="hash" />
 
             <button id="download-button" class="download" @click="downloadFile">Download PDF</button>
           </div>
@@ -75,23 +75,24 @@
 <script>
 import NavFooter from "../components/NavFooter.vue";
 import JumpButton from "../components/buttons/JumpButton.vue";
-// import { upload } from "../api/audit.js";
 import confs from "../confs";
 import { onMounted, reactive } from "vue";
 import axios from 'axios';
 import { ref } from 'vue';
+import { SHA256 } from 'crypto-js';
 
 export default {
   title: "Audit",
   components: { NavFooter },
   setup() {
     const fileInput = ref(null);
-    const responseInput = ref(null);
+    const hash = ref(null);
 
     const uploadFile = () => {
       const formData = new FormData();
       formData.append('file', fileInput.value.files[0]);
       formData.append('contractName', $("#contractName").val());
+      formData.append('hash', hash.value);
 
       axios.post(confs.backendsURL + "/audit/upload", formData, {
         headers: {
@@ -100,14 +101,13 @@ export default {
       }).then(response => {
         console.log('File uploaded successfully');
         console.log(response.data);
-        responseInput.value.value = response.data;
       }).catch(error => {
         console.log('Error uploading file');
       });
     };
 
     const downloadFile = () => {
-      const fileUrl = "http://localhost:8099/" + responseInput.value.value + "/" + responseInput.value.value + ".pdf";
+      const fileUrl = "http://localhost:8099/" + hash.value + "/" + hash.value + ".pdf";
       console.log(fileUrl);
 
       axios.get(fileUrl, {
@@ -117,7 +117,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement('a');
           link.href = url;
-          link.setAttribute('download', responseInput.value.value + '.pdf');
+          link.setAttribute('download', hash.value + '.pdf');
           link.click();
         }
       }).catch(error => {
@@ -131,6 +131,13 @@ export default {
       const files = event.target.files;
       if (files.length > 0) {
         selectedFileName.value = files[0].name;
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          hash.value = SHA256(reader.result);
+        };
+        console.log(hash.value);
+        reader.readAsBinaryString(file);
       } else {
         selectedFileName.value = '';
       }
@@ -138,80 +145,14 @@ export default {
 
     return {
       fileInput,
-      responseInput,
       uploadFile,
       downloadFile,
       selectedFileName,
       onFileSelected,
+      hash,
     };
-
-
-    // $(document).ready(function () {
-    //   $("#myForm").submit(function (event) {
-    //     event.preventDefault();
-    //     var formData = new FormData(this);
-    //
-    //     $.ajax({
-    //       url: confs.backendsURL + "/audit/upload",
-    //       type: "POST",
-    //       data: formData,
-    //       cache: false,
-    //       contentType: false,
-    //       processData: false,
-    //       success: function (data) {
-    //         console.log("File uploaded successfully");
-    //         console.log(data);
-    //         $("#response").val(data);
-    //       },
-    //       error: function (xhr, status, error) {
-    //         console.log("Error uploading file");
-    //       },
-    //     });
-    //   });
-    //
-    //   $("#download-button").click(function () {
-    //     var fileUrl =
-    //         "http://localhost:8099/" +
-    //         $("#response").val() +
-    //         "/" +
-    //         $("#response").val() +
-    //         ".pdf"; // Replace with the URL of your file
-    //     console.log(fileUrl);
-    //     var xhr = new XMLHttpRequest();
-    //
-    //     // Set the response type to blob to handle binary data
-    //     xhr.responseType = "blob";
-    //
-    //     // Set up the onload event to handle the response
-    //     xhr.onload = function () {
-    //       if (xhr.status === 200) {
-    //         // Create a link element with the download attribute and click it to trigger the download
-    //         var link = document.createElement("a");
-    //         link.href = window.URL.createObjectURL(xhr.response);
-    //         link.download = $("#response").val() + ".pdf"; // Replace with the desired filename
-    //         link.click();
-    //       }
-    //     };
-    //
-    //     // Send the request
-    //     xhr.open("GET", fileUrl);
-    //     xhr.send();
-    //   });
-    // });
   },
 };
-
-// export default {
-//   title: "Audit",
-//   components: { NavFooter, JumpButton },
-//   setup() {
-//     //文件改变
-//     const getFile = (event) => {
-//       console.log(event.target.files[0]);
-//     };
-//     return { getFile };
-//   },
-// };
 </script>
 
 <style scoped>
