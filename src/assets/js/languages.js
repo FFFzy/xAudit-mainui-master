@@ -83,10 +83,10 @@ export default {
 
             },
             audit:{
-                setStep1:"Step 1: Commit",
-                setStep1Content:"Please input a .zip file containing source code files.",
+                setStep1:"Step 1: Upload",
+                setStep1Content:"Please upload a .zip file containing source code files or contract .sol file.",
                 setStep2:"Step 2: Audit",
-                setStep2Content:"After committing and auditing, you will get hash of result here."
+                setStep2Content:"Please keep the hash for accessing the auditing result, and download the report."
             },
             searchPanel: {
                 secSearchInputTitle: "Search",

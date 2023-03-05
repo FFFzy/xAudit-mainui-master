@@ -42,7 +42,7 @@
                 />
               </div>
 
-              <input type="text" name="contractName" id="contractName" />
+              <input type="text" name="contractName" id="contractName" placeholder="Contract/Project name"/>
 
               <input type="submit" value="Upload" />
             </form>
@@ -68,7 +68,7 @@
               <span>{{ $t("message.audit.setStep2Content") }}</span>
             </h3>
           </div>
-          <div id="step2">
+          <div id="step2" >
             <label for="hash-input">Hash for download:</label>
             <input type="text" id="hash-input" ref="hash" />
 
@@ -126,7 +126,7 @@ export default {
 
     const downloadFile = () => {
       const fileUrl =
-        "http://localhost:8099/" + hash.value + "/" + hash.value + ".pdf";
+        "http://localhost:8099/" + hash.value.value + "/" + hash.value.value + ".pdf";
       console.log(fileUrl);
 
       axios
@@ -138,7 +138,7 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", hash.value + ".pdf");
+            link.setAttribute("download", hash.value.value + ".pdf");
             link.click();
           }
         })
