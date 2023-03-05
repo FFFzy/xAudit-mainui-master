@@ -13,6 +13,7 @@
     "ipfs-css": "^0.13.1",
     "ipfs-geoip": "^6.0.0",
     "ipfs-http-client": "^44.1.1",
+    "path-browserify": "^1.0.1",
     "simplemde": "^1.11.2",
     "tachyons": "^4.11.1",
     "vue": "^3.2.4",

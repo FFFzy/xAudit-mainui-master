@@ -17,25 +17,35 @@
 
           <div>
             <form id="myForm" ref="myForm" @submit.prevent="uploadFile">
-<!--              <input type="file" name="file" class="upload-input" />-->
-<!--              <input type="text" name="contractName" id="contractName" />-->
-<!--              <input type="submit" value="Upload" />-->
+              <!--              <input type="file" name="file" class="upload-input" />-->
+              <!--              <input type="text" name="contractName" id="contractName" />-->
+              <!--              <input type="submit" value="Upload" />-->
 
-<!--              <input type="file" name="file" ref="fileInput" style="display:none"/>-->
+              <!--              <input type="file" name="file" ref="fileInput" style="display:none"/>-->
 
-              <div class="divFileInput" >
+              <div class="divFileInput">
                 <label for="file-upload" class="custom-file-upload">
                   <i class="fa fa-cloud-upload"></i> Choose File
                 </label>
-                <input id="file-upload" type="file" @change="onFileSelected" ref="fileInput" style="display:none">
-                <input type="text" :value="selectedFileName" placeholder="No file selected" readonly >
+                <input
+                  id="file-upload"
+                  type="file"
+                  @change="onFileSelected"
+                  ref="fileInput"
+                  style="display: none"
+                />
+                <input
+                  type="text"
+                  :value="selectedFileName"
+                  placeholder="No file selected"
+                  readonly
+                />
               </div>
 
               <input type="text" name="contractName" id="contractName" />
 
               <input type="submit" value="Upload" />
             </form>
-
           </div>
         </div>
         <!--- END ROW -->
@@ -62,7 +72,9 @@
             <label for="hash-input">Hash for download:</label>
             <input type="text" id="hash-input" ref="hash" />
 
-            <button id="download-button" class="download" @click="downloadFile">Download PDF</button>
+            <button id="download-button" class="download" @click="downloadFile">
+              Download PDF
+            </button>
           </div>
         </div>
         <!--- END ROW -->
@@ -77,69 +89,92 @@ import NavFooter from "../components/NavFooter.vue";
 import JumpButton from "../components/buttons/JumpButton.vue";
 import confs from "../confs";
 import { onMounted, reactive } from "vue";
-import axios from 'axios';
-import { ref } from 'vue';
-import { SHA256 } from 'crypto-js';
+import axios from "axios";
+import { ref } from "vue";
+import CryptoJS from "crypto-js";
 
 export default {
   title: "Audit",
   components: { NavFooter },
   setup() {
     const fileInput = ref(null);
-    const hash = ref(null);
+    const hash = ref('');
 
     const uploadFile = () => {
       const formData = new FormData();
-      formData.append('file', fileInput.value.files[0]);
-      formData.append('contractName', $("#contractName").val());
-      formData.append('hash', hash.value);
+      formData.append("file", fileInput.value.files[0]);
+      formData.append("contractName", $("#contractName").val());
+      // ?why should I need to reset the value
+      // hash.value = $("#hash-input").val();
+      formData.append("hash", hash.value.value);
+      console.log(hash.value.value);
 
-      axios.post(confs.backendsURL + "/audit/upload", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(response => {
-        console.log('File uploaded successfully');
-        console.log(response.data);
-      }).catch(error => {
-        console.log('Error uploading file');
-      });
+      axios
+        .post(confs.backendsURL + "/audit/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("File uploaded successfully");
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log("Error uploading file");
+        });
     };
 
     const downloadFile = () => {
-      const fileUrl = "http://localhost:8099/" + hash.value + "/" + hash.value + ".pdf";
+      const fileUrl =
+        "http://localhost:8099/" + hash.value + "/" + hash.value + ".pdf";
       console.log(fileUrl);
 
-      axios.get(fileUrl, {
-        responseType: 'blob'
-      }).then(response => {
-        if (response.status === 200) {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', hash.value + '.pdf');
-          link.click();
-        }
-      }).catch(error => {
-        console.log('Error downloading file');
-      });
+      axios
+        .get(fileUrl, {
+          responseType: "blob",
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", hash.value + ".pdf");
+            link.click();
+          }
+        })
+        .catch((error) => {
+          console.log("Error downloading file");
+        });
     };
 
-    const selectedFileName = ref('');
-
-    const onFileSelected = (event) => {
-      const files = event.target.files;
-      if (files.length > 0) {
-        selectedFileName.value = files[0].name;
-        const file = files[0];
+    async function calculateFileHash(file) {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          hash.value = SHA256(reader.result);
+          const fileWordArray = CryptoJS.lib.WordArray.create(reader.result);
+          const hash = CryptoJS.SHA256(fileWordArray).toString();
+          resolve(hash);
         };
-        console.log(hash.value);
-        reader.readAsBinaryString(file);
+        reader.onerror = () => {
+          reject(new Error("Failed to read file"));
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    const selectedFileName = ref("");
+
+    const onFileSelected = async (event) => {
+      const files = event.target.files;
+      const file = files[0];
+      const fileHash = await calculateFileHash(file);
+      hash.value = fileHash;
+      console.log(hash.value);
+      $("#hash-input").val(fileHash);
+      if (files.length > 0) {
+        selectedFileName.value = files[0].name;
       } else {
-        selectedFileName.value = '';
+        selectedFileName.value = "";
       }
     };
 
@@ -167,7 +202,7 @@ export default {
 
 /*#myForm input[type="file"],*/
 #myForm input[type="text"],
-#myForm input[type="submit"]{
+#myForm input[type="submit"] {
   display: block;
   margin: 10px 0;
   width: 100%;
@@ -177,7 +212,7 @@ export default {
   border-radius: 5px;
 }
 
-#myForm div{
+#myForm div {
   display: block;
   margin: 10px 0;
   width: 100%;
@@ -196,7 +231,7 @@ export default {
   background-color: #248054;
 }
 
-#step2{
+#step2 {
   margin: 20px auto;
   width: 400px;
   display: flex;
@@ -250,13 +285,13 @@ export default {
   margin-right: 5px;
 }
 
-.divFileInput{
+.divFileInput {
   position: relative;
   width: 100%;
   /*background-color: #f1f1f1;*/
 }
 
-.divFileInput label{
+.divFileInput label {
   position: absolute;
   top: 14px;
   right: 3px;
@@ -264,5 +299,4 @@ export default {
   border: none;
   outline: none;
 }
-
 </style>
