@@ -86,7 +86,8 @@ export default {
                 setStep1:"Step 1: Upload",
                 setStep1Content:"Please upload a .zip file containing source code files or contract .sol file.",
                 setStep2:"Step 2: Audit",
-                setStep2Content:"Please keep the hash for accessing the auditing result, and download the report."
+                setStep2Content:"Please keep the hash for accessing the auditing result, and download the report.",
+                setAuditLoading:"Auditing, please wait..."
             },
             searchPanel: {
                 secSearchInputTitle: "Search",

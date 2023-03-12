@@ -23,6 +23,11 @@
         <div class="col-md-10">
           <div class="row">
             <button type="button" class="btn btn-tag"
+                    :class="types.findIndex((val)=>{return val==='datasets'})>=0? 'btn-primary':'btn-default'"
+                    @click="funcSearch(keywords,funcNotElem('datasets',types),[],1,pageSize,sort,order)">
+              dataset
+            </button>
+            <button type="button" class="btn btn-tag"
                     :class="types.findIndex((val)=>{return val==='papers'})>=0? 'btn-primary':'btn-default'"
                     @click="funcSearch(keywords,funcNotElem('papers',types),[],1,pageSize,sort,order)">
               paper
@@ -119,6 +124,38 @@
           </div>
           <div class="container" v-for="item in items">
             <div class="row">
+              <DatasetSearchItem
+                  v-if="item['type']==='datasets'"
+                  :id="item['id']"
+                  :url="'/dataset/' + item['id']"
+                  :name="item['name']"
+                  :tags="item['tags']"
+                  :up-time="item['up_time']"
+                  :introduction="item['introduction']"
+                  :download-cnt="item['download_cnt']"
+                  :func-jump-download="(item['url']!=='')?()=>{funcJumpDownload(item['url'])}:null"
+                  :func-jump-paper="(item['paper_id']!==0)?()=>{router.push('/paper/' + item['paper_id'])}:null"
+                  :cite="(item['paper_bib_tex']!==''||item['paper_ieee_cite']!==''||item['paper_acm_cite']!=='')?
+                  {'BibTex':item['paper_bib_tex'], 'IEEECite':item['paper_ieee_cite'], 'ACMCite':item['paper_acm_cite']}:null"
+              ></DatasetSearchItem>
+            </div>
+            <div class="row">
+              <PaperSearchItem
+                  v-if="item['type']==='papers'"
+                  :id="item['id']"
+                  :title="item['title']"
+                  :tags="item['tags']"
+                  :introduction="item['introduction']"
+                  :download-cnt="item['download_cnt']"
+                  :up-time="item['up_time']"
+                  :func-jump-download="(item['url']!=='')?()=>{funcJumpDownload(item['url'])}:null"
+                  :func-jump-download-p-p-t="(item['url4ppt']!=='')? ()=>{funcJumpDownload(item['url4ppt'])}:null"
+                  :func-jump-dataset="(item['dataset_id']!==0)?()=>{router.push('/dataset/' + item['dataset_id'])}:null"
+                  :cite="(item['bib_tex']!==''||item['ieee_cite']!==''||item['acm_cite']!=='')?
+                  {'BibTex':item['bib_tex'], 'IEEECite':item['ieee_cite'], 'ACMCite':item['acm_cite']}:null"
+              ></PaperSearchItem>
+            </div>
+            <div class="row">
               <ArticleSearchItem
                   v-if="item['type']==='articles'"
                   :url="'/article/' + item['id']"
@@ -170,13 +207,15 @@
 <script>
 
 import {reactive, ref} from "vue";
+import DatasetSearchItem from "./items/DatasetSearchItem.vue";
 import {useRouter} from "vue-router";
 import confs from "../confs";
+import PaperSearchItem from "./items/PaperSearchItem.vue";
 import ArticleSearchItem from "./items/ArticleSearchItem.vue";
 
 export default {
   name: "SearchPanel",
-  components: {ArticleSearchItem},
+  components: {ArticleSearchItem, PaperSearchItem, DatasetSearchItem},
   props: {
     keywords: {
       type: String,
@@ -186,7 +225,7 @@ export default {
       type: Array,
       default() {
         // return ['datasets', 'papers', 'articles']
-        return ['papers']
+        return ['datasets', 'papers']
       }
     },
     tags: {

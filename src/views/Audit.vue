@@ -17,12 +17,6 @@
 
           <div>
             <form id="myForm" ref="myForm" @submit.prevent="uploadFile">
-              <!--              <input type="file" name="file" class="upload-input" />-->
-              <!--              <input type="text" name="contractName" id="contractName" />-->
-              <!--              <input type="submit" value="Upload" />-->
-
-              <!--              <input type="file" name="file" ref="fileInput" style="display:none"/>-->
-
               <div class="divFileInput">
                 <label for="file-upload" class="custom-file-upload">
                   <i class="fa fa-cloud-upload"></i> Choose File
@@ -69,10 +63,16 @@
             </h3>
           </div>
           <div id="step2" >
-            <label for="hash-input">Hash for download:</label>
-            <input type="text" id="hash-input" ref="hash" />
+<!--            <label for="hash-input">Hash for download:</label>-->
+            <input type="text" id="hash-input" ref="hash" placeholder="Hash for download"/>
 
-            <button id="download-button" class="download" @click="downloadFile">
+            <div class="row text-center" style="margin-top: 50px"
+                 v-if="isLoading">
+              <div class="sp sp-circle"></div>
+              <div>{{ $t("message.audit.setAuditLoading") }}</div>
+            </div>
+
+            <button id="download-button" class="download" @click="downloadFile" v-if="!isLoading">
               Download PDF
             </button>
           </div>
@@ -99,8 +99,11 @@ export default {
   setup() {
     const fileInput = ref(null);
     const hash = ref('');
+    const isLoading = ref(false);
+    const pollingInterval = 3000; // interval in milliseconds for polling the server
+    let pollId = null; // id of the polling timer
 
-    const uploadFile = () => {
+    const uploadFile = async () => {
       const formData = new FormData();
       formData.append("file", fileInput.value.files[0]);
       formData.append("contractName", $("#contractName").val());
@@ -109,19 +112,50 @@ export default {
       formData.append("hash", hash.value.value);
       console.log(hash.value.value);
 
-      axios
-        .post(confs.backendsURL + "/audit/upload", formData, {
+      // axios
+      //   .post(confs.backendsURL + "/audit/upload", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log("File uploaded successfully");
+      //     console.log(response.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error uploading file");
+      //   });
+
+      try {
+        const response = await axios.post(confs.backendsURL + "/audit/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        })
-        .then((response) => {
-          console.log("File uploaded successfully");
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log("Error uploading file");
         });
+        console.log("File uploaded successfully");
+        console.log(response.data);
+
+        // Start polling the server for processing status
+        pollId = setInterval(async () => {
+          try {
+            const pollResponse = await axios.get("http://localhost:8099/" + hash.value.value + "/" + hash.value.value + ".pdf");
+            if (pollResponse.status !== 200) {
+              console.log("File is still being processed...");
+            } else {
+              console.log("File processing is complete!");
+              isLoading.value = false;
+              clearInterval(pollId); // stop polling
+            }
+          } catch (error) {
+            console.log("Error polling server:", error);
+            clearInterval(pollId); // stop polling
+          }
+        }, pollingInterval);
+
+        isLoading.value = true; // show loading animation while processing
+      } catch (error) {
+        console.log("Error uploading file:", error);
+      }
     };
 
     const downloadFile = () => {
@@ -185,6 +219,7 @@ export default {
       selectedFileName,
       onFileSelected,
       hash,
+      isLoading,
     };
   },
 };
@@ -240,7 +275,7 @@ export default {
   align-items: center;
 }
 
-#response {
+#hash-input {
   margin-top: 20px;
   width: 100%;
   padding: 10px;

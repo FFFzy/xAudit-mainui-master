@@ -30,31 +30,31 @@
                 {{ $t("message.navFooter.navBarPapersTitle") }}
               </router-link>
             </li>
-            <li>
-              <div class="dropdown" style="padding-top: 9px">
-                <button id="btn-product-menu" class="btn-link" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true"
-                        style="font-size: 15px;font-family: Montserrat,sans-serif">
-                  {{ $t("message.navFooter.navBarProductsTitle") }}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btn-product-menu">
-                  <li>
-                    <router-link to="/article/3">
-                      <b class="text-primary"><i class="fa fa-bug"></i> {{ $t("message.navFooter.menuProductsTitles[0]") }}</b>
-                      <p>{{ $t("message.navFooter.menuProductsDescriptions[0]") }}</p>
-                    </router-link>
-                  </li>
-                  <li role="separator" class="divider" style="margin-left: 10px;margin-right: 10px"></li>
-                  <li>
-                    <router-link to="/labelcloud">
-                      <b class="text-primary"><i class="fa fa-cloud"></i> {{ $t("message.navFooter.menuProductsTitles[1]") }}</b>
-                      <p>{{ $t("message.navFooter.menuProductsDescriptions[1]") }}</p>
-                    </router-link>
-                  </li>
-                </ul>
-              </div>
-            </li>
+<!--            <li>-->
+<!--              <div class="dropdown" style="padding-top: 9px">-->
+<!--                <button id="btn-product-menu" class="btn-link" data-toggle="dropdown"-->
+<!--                        aria-haspopup="true" aria-expanded="true"-->
+<!--                        style="font-size: 15px;font-family: Montserrat,sans-serif">-->
+<!--                  {{ $t("message.navFooter.navBarProductsTitle") }}-->
+<!--                  <span class="caret"></span>-->
+<!--                </button>-->
+<!--                <ul class="dropdown-menu" aria-labelledby="btn-product-menu">-->
+<!--                  <li>-->
+<!--                    <router-link to="/article/3">-->
+<!--                      <b class="text-primary"><i class="fa fa-bug"></i> {{ $t("message.navFooter.menuProductsTitles[0]") }}</b>-->
+<!--                      <p>{{ $t("message.navFooter.menuProductsDescriptions[0]") }}</p>-->
+<!--                    </router-link>-->
+<!--                  </li>-->
+<!--                  <li role="separator" class="divider" style="margin-left: 10px;margin-right: 10px"></li>-->
+<!--                  <li>-->
+<!--                    <router-link to="/labelcloud">-->
+<!--                      <b class="text-primary"><i class="fa fa-cloud"></i> {{ $t("message.navFooter.menuProductsTitles[1]") }}</b>-->
+<!--                      <p>{{ $t("message.navFooter.menuProductsDescriptions[1]") }}</p>-->
+<!--                    </router-link>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </li>-->
             <li>
               <router-link to="/about">
                 {{ $t("message.navFooter.navBarAboutTitle") }}

@@ -6,7 +6,7 @@
       </router-link>
     </div>
     <div class="row col-md-12">
-      <span>[{{ $t("message.searchItem.articleTypeTitle") }}] </span>
+<!--      <span>[{{ $t("message.searchItem.articleTypeTitle") }}] </span>-->
       <span> {{ upTime }}</span>
       <button type="button" class="btn btn-default item-tag"
               v-for="tag in tags">
@@ -25,7 +25,7 @@
           :func-jump="funcJumpDownload"
           :info="$t('message.searchItem.btnDownload')">
       </JumpButton>
-      <span class="pull-right col-md-2">{{ $t("message.searchItem.reading") }}: {{ downloadCnt }}</span>
+<!--      <span class="pull-right col-md-2">{{ $t("message.searchItem.reading") }}: {{ downloadCnt }}</span>-->
     </div>
     <h5 class="page-header col-md-11" style="margin-top: 5px"></h5>
   </div>
@@ -51,10 +51,10 @@ export default {
       type: String,
       required: true,
     },
-    downloadCnt: {
-      type: Number,
-      required: true,
-    },
+    // downloadCnt: {
+    //   type: Number,
+    //   required: true,
+    // },
     upTime: {
       type: String,
       required: true,

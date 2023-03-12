@@ -4,7 +4,7 @@ import {createRouter, createWebHashHistory} from "vue-router";
 // 可以从其他文件 import 进来
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
-import Search from "./views/Search.vue";
+import Search from "./views/Search2.vue";
 import Audit from "./views/Audit.vue";
 import Paper from "./views/Paper.vue";
 import Labelcloud from "./views/Labelcloud.vue";
