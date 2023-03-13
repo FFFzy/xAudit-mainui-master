@@ -212,7 +212,7 @@ fieldset {
     color: #248054 !important;
     background-color: transparent;
 }
-.navbar-brand { padding: 0px }
+.navbar-brand { padding: 0 }
 .navbar-brand img { width: 150px;margin-left:10px;}
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
   border-color: #fff;
@@ -242,7 +242,7 @@ fieldset {
 @media only screen and (max-width:480px) { 
     .menu-top {
         color: #fff !important;
-        margin-left: 0px;
+        margin-left: 0;
     }
 
 }
@@ -424,8 +424,8 @@ text-transform: uppercase;
 
 /*START HTML5 VIDEO DESIGN*/
 .html-video {
-    top: 0%;
-    left: 0%;
+    top: 0;
+    left: 0;
     max-height: 700px;
     width: 100%;
     overflow: hidden;
@@ -482,7 +482,7 @@ transition: all 0.4s ease 0s;
 @media only screen and (max-width:768px) { 
     .single_about { margin-bottom: 40px }
 }
-.single_about:last-child { border-right: 0px }
+.single_about:last-child { border-right: 0 }
 .single_about:hover { background: #248054 }
 .single_about i {
 background: #248054 none repeat scroll 0 0;
@@ -577,7 +577,7 @@ margin-top: 50px;
 padding: 50px;
  }
 @media only screen and (max-width:768px) { 
-    .single_feature { padding-top: 0px }
+    .single_feature { padding-top: 0 }
 }
 @media only screen and (max-width:480px) { 
     .single_feature { padding-top: 50px }
@@ -607,7 +607,7 @@ padding: 50px;
 }
 .single_feature span {
     border-bottom: 1px dashed #ccc;
-    margin: auto;
+    /*margin: auto;*/
     width: 80px;
     display: block;
     margin: 20px auto;
@@ -859,7 +859,7 @@ padding: 50px;
 	background: #248054 none repeat scroll 0 0;
 	border: 1px solid #248054;
 	color: #fff;
-	box-shadow: 0px 11px 10px 0px rgba(0,0,0,0.1);
+	box-shadow: 0 11px 10px 0 rgba(0,0,0,0.1);
 }
 .counter h2 {
     color: #161616;
@@ -993,7 +993,7 @@ padding: 50px;
 	width: 100%;	
 }
 .social_table ul{
-	list-style: none;
+	/*list-style: none;*/
 	display: table-cell;
 	list-style: outside none none;
 	padding: 0;
@@ -1050,7 +1050,7 @@ background: #fff none repeat scroll 0 0;
 	-moz-border-right-colors: none;
 	-moz-border-top-colors: none;
 	background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-	border-color: -moz-use-text-color -moz-use-text-color #fff;
+	border-color: #fff;
 	border-image: none;
 	border-radius: 0;
 	border-style: none none solid;
@@ -1099,7 +1099,7 @@ background: #fff none repeat scroll 0 0;
             transition: all 0.4s ease 0s;
 }
 .pricing-table:hover{
- box-shadow: 0 21px 65px 0px rgba(0, 0, 0, 0.12);
+ box-shadow: 0 21px 65px 0 rgba(0, 0, 0, 0.12);
 }
 @media only screen and (max-width:480px) { 
     .pricing-table { margin-bottom: 40px }
@@ -1202,7 +1202,7 @@ background: #fff none repeat scroll 0 0;
 }
 .testimonials_area p{
 	color: #fff;
-	margin: 20px 0px;
+	margin: 20px 0;
 }
 .testimonials_area h5{
 	color: #248054;
@@ -1333,7 +1333,7 @@ background: #fff none repeat scroll 0 0;
 }
 @media only screen and (max-width:480px) { 
     .btn-promotion-bg {
-        margin-left: 0px;
+        margin-left: 0;
         margin-top: 20px;
     }
 }
@@ -1359,7 +1359,7 @@ background: #fff none repeat scroll 0 0;
 }
 .contact input {
 	background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-	border-color: -moz-use-text-color -moz-use-text-color #ddd;
+	border-color: #ddd;
 	border-radius: 0;
 	border-style: none none solid;
 	border-width: 0 0 1px;
@@ -1371,7 +1371,7 @@ background: #fff none repeat scroll 0 0;
 }
 .contact textarea {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    border-color: -moz-use-text-color -moz-use-text-color #ddd;
+    border-color: #ddd;
     border-radius: 0;
 	font-family: montserrat,sans-serif;
     border-style: none none solid;
@@ -1496,27 +1496,27 @@ background: #fff none repeat scroll 0 0;
 }
 .f_twitter:hover {
     background: #40BFF5;
-    box-shadow: 0 0 0 0px #40BFF5;
+    box-shadow: 0 0 0 0 #40BFF5;
     border: 1px solid #40BFF5;
 }
 .f_google:hover {
     background: #EB5E4C;
-    box-shadow: 0 0 0 0px #EB5E4C;
+    box-shadow: 0 0 0 0 #EB5E4C;
     border: 1px solid #EB5E4C;
 }
 .f_linkedin:hover {
     background: #238CC8;
-    box-shadow: 0 0 0 0px #238CC8;
+    box-shadow: 0 0 0 0 #238CC8;
     border: 1px solid #238CC8;
 }
 .f_youtube:hover {
     background: #CC181E;
-    box-shadow: 0 0 0 0px #CC181E;
+    box-shadow: 0 0 0 0 #CC181E;
     border: 1px solid #CC181E;
 }
 .f_skype:hover {
     background: #00AFF0;
-    box-shadow: 0 0 0 0px #00AFF0;
+    box-shadow: 0 0 0 0 #00AFF0;
     border: 1px solid #00AFF0;
 }
 /*END FOOTER SOCIAL DESIGN*/

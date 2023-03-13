@@ -17,7 +17,15 @@
 
           <div>
             <form id="myForm" ref="myForm" @submit.prevent="uploadFile">
-              <div class="divFileInput">
+              <div class="form-group">
+<!--                <label for="file-type">Select file type:</label>-->
+                <select id="file-type" name="fileType" ref="fileType" class="form-control" @change="onSelectChange">
+                  <option value="file">File</option>
+                  <option value="etherscan">Address on Etherscan</option>
+                  <option value="github">Address on Github</option>
+                </select>
+              </div>
+              <div class="divFileInput" v-if="showFileInput">
                 <label for="file-upload" class="custom-file-upload">
                   <i class="fa fa-cloud-upload"></i> Choose File
                 </label>
@@ -36,7 +44,9 @@
                 />
               </div>
 
-              <input type="text" name="contractName" id="contractName" placeholder="Contract/Project name"/>
+              <input v-if="showFileInput" type="text" name="contractName" id="contractName" placeholder="Contract/Project name"/>
+
+              <input v-if="showAddressInput" type="text" ref="address" name="address" id="address" placeholder="Input an address on Etherscan/GitHub"/>
 
               <input type="submit" value="Upload" />
             </form>
@@ -99,18 +109,28 @@ export default {
   setup() {
     const fileInput = ref(null);
     const hash = ref('');
+    const fileType = ref("");
+    const address = ref("");
     const isLoading = ref(false);
+    const showFileInput = ref(true);
+    const showAddressInput = ref(false);
     const pollingInterval = 3000; // interval in milliseconds for polling the server
     let pollId = null; // id of the polling timer
 
     const uploadFile = async () => {
       const formData = new FormData();
-      formData.append("file", fileInput.value.files[0]);
-      formData.append("contractName", $("#contractName").val());
-      // ?why should I need to reset the value
-      // hash.value = $("#hash-input").val();
-      formData.append("hash", hash.value.value);
-      console.log(hash.value.value);
+
+      if (fileType.value === "file") {
+        formData.append("fileType", fileType.value);
+        formData.append("file", fileInput.value.files[0]);
+        formData.append("contractName", $("#contractName").val());
+      } else if (fileType.value === "address" || fileType.value === "github") {
+        // Code to handle address upload
+        formData.append("fileType", fileType.value);
+        formData.append("address", address.value);
+        hash.value = address.value
+        console.log(hash.value, "111")
+      }
 
       // axios
       //   .post(confs.backendsURL + "/audit/upload", formData, {
@@ -212,6 +232,17 @@ export default {
       }
     };
 
+    const onSelectChange = async (event) => {
+      const selectedValue = event.target.value;
+      if (selectedValue === "etherscan" || selectedValue === "github") {
+        showFileInput.value = false;
+        showAddressInput.value = true;
+      } else {
+        showFileInput.value = true;
+        showAddressInput.value = false;
+      }
+    };
+
     return {
       fileInput,
       uploadFile,
@@ -220,6 +251,11 @@ export default {
       onFileSelected,
       hash,
       isLoading,
+      fileType,
+      onSelectChange,
+      showFileInput,
+      showAddressInput,
+      address
     };
   },
 };
@@ -245,6 +281,7 @@ export default {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: #495057;
 }
 
 #myForm div {
@@ -282,6 +319,7 @@ export default {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: #495057;
 }
 
 #download-button {
@@ -302,6 +340,32 @@ export default {
 
 .upload-label span {
   margin-left: 10px;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 48px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #495057;
+  box-shadow: none;
 }
 
 .custom-file-upload {
