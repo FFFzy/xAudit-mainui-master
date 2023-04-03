@@ -100,9 +100,9 @@
                 {{ $t("message.navFooter.footerContactWeChat") }} : inpluslab
               </span></li>
               <li><span class="wow bounceInDown" data-wow-delay=".1s"
-                        href="#">Email : xblock_blockchain@yeah.net</span></li>
+                        href="#">Email : XAudit_blockchain@yeah.net</span></li>
               <li><span class="wow bounceInDown" data-wow-delay=".2s"
-                        href="#">Copyright © 2022 | XBlock</span></li>
+                        href="#">Copyright © 2023 | XAudit</span></li>
             </ul>
           </div>
 

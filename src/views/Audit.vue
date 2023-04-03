@@ -18,35 +18,40 @@
           <div>
             <form id="myForm" ref="myForm" @submit.prevent="uploadFile">
               <div class="form-group">
-<!--                <label for="file-type">Select file type:</label>-->
                 <select id="file-type" name="fileType" ref="fileType" class="form-control" @change="onSelectChange">
-                  <option value="file">File</option>
+                  <option value="file">File(.zip/.sol)</option>
                   <option value="etherscan">Address on Etherscan</option>
                   <option value="github">Address on Github</option>
                 </select>
+
+                <div class="prompt-box">
+                  <label v-if="showGithubInput">
+                    Enter the address on Github like these:<br>
+                    Project: https://github.com/xxx/{project_name} <br>
+                    File: https://github.com/xxx/.../xxx/xxx.sol
+                  </label>
+                  <label v-if="showEtherscanInput">
+                    Enter the address on Etherscan like this:<br>
+                    0x0000000000000000000000000000000000000000
+                  </label>
+                </div>
               </div>
+
               <div class="divFileInput" v-if="showFileInput">
                 <label for="file-upload" class="custom-file-upload">
                   <i class="fa fa-cloud-upload"></i> Choose File
                 </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  @change="onFileSelected"
-                  ref="fileInput"
-                  style="display: none"
+                <input id="file-upload" type="file" @change="onFileSelected" ref="fileInput" style="display: none"
                 />
-                <input
-                  type="text"
-                  :value="selectedFileName"
-                  placeholder="No file selected"
-                  readonly
+                <input type="text" :value="selectedFileName" placeholder="No file selected" readonly
                 />
               </div>
 
               <input v-if="showFileInput" type="text" name="contractName" id="contractName" placeholder="Contract/Project name"/>
 
-              <input v-if="showAddressInput" type="text" ref="address" name="address" id="address" placeholder="Input an address on Etherscan/GitHub"/>
+              <input v-if="showEtherscanInput" type="text" ref="address" name="address" id="address" placeholder="Input an address on Etherscan"/>
+
+              <input v-if="showGithubInput" type="text" ref="address" name="address" id="address" placeholder="Input an address on GitHub"/>
 
               <input type="submit" value="Upload" />
             </form>
@@ -76,8 +81,7 @@
 <!--            <label for="hash-input">Hash for download:</label>-->
             <input type="text" id="hash-input" ref="hash" placeholder="Hash for download"/>
 
-            <div class="row text-center" style="margin-top: 50px"
-                 v-if="isLoading">
+            <div class="row text-center" style="margin-top: 50px" v-if="isLoading">
               <div class="sp sp-circle"></div>
               <div>{{ $t("message.audit.setAuditLoading") }}</div>
             </div>
@@ -113,7 +117,8 @@ export default {
     const address = ref("");
     const isLoading = ref(false);
     const showFileInput = ref(true);
-    const showAddressInput = ref(false);
+    const showEtherscanInput = ref(false);
+    const showGithubInput = ref(false);
     const pollingInterval = 3000; // interval in milliseconds for polling the server
     let pollId = null; // id of the polling timer
 
@@ -124,11 +129,12 @@ export default {
         formData.append("fileType", fileType.value);
         formData.append("file", fileInput.value.files[0]);
         formData.append("contractName", $("#contractName").val());
-      } else if (fileType.value === "address" || fileType.value === "github") {
+      } else if (fileType.value === "etherscan" || fileType.value === "github") {
         // Code to handle address upload
         formData.append("fileType", fileType.value);
         formData.append("address", address.value);
         hash.value = address.value
+        $("#hash-input").val(hash.value);
         console.log(hash.value, "111")
       }
 
@@ -234,12 +240,18 @@ export default {
 
     const onSelectChange = async (event) => {
       const selectedValue = event.target.value;
-      if (selectedValue === "etherscan" || selectedValue === "github") {
+      if (selectedValue === "etherscan") {
         showFileInput.value = false;
-        showAddressInput.value = true;
-      } else {
+        showGithubInput.value = false;
+        showEtherscanInput.value = true;
+      }else if(selectedValue === "github"){
+        showFileInput.value = false;
+        showGithubInput.value = true;
+        showEtherscanInput.value = false;      }
+      else {
         showFileInput.value = true;
-        showAddressInput.value = false;
+        showGithubInput.value = false;
+        showEtherscanInput.value = false;
       }
     };
 
@@ -254,7 +266,8 @@ export default {
       fileType,
       onSelectChange,
       showFileInput,
-      showAddressInput,
+      showEtherscanInput,
+      showGithubInput,
       address
     };
   },
@@ -292,6 +305,10 @@ export default {
   border: none;
 }
 
+#myForm div[class="prompt-box"] {
+  width: 120%;
+}
+
 #myForm input[type="submit"] {
   background-color: #248054;
   color: #fff;
@@ -301,6 +318,29 @@ export default {
 
 #myForm input[type="submit"]:hover {
   background-color: #248054;
+}
+
+.prompt-box {
+  position: absolute;
+  top: -15px;
+  left: 110%;
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: #fff;
+  z-index: 1;
+  color: #495057;
+}
+
+.prompt-box label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  height: 185px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: left;
 }
 
 #step2 {
