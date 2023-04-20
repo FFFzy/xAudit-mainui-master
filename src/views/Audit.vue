@@ -113,8 +113,6 @@ export default {
   setup() {
     const fileInput = ref(null);
     const hash = ref('');
-    const fileType = ref("");
-    const address = ref("");
     const isLoading = ref(false);
     const showFileInput = ref(true);
     const showEtherscanInput = ref(false);
@@ -124,34 +122,29 @@ export default {
 
     const uploadFile = async () => {
       const formData = new FormData();
-
-      if (fileType.value === "file") {
-        formData.append("fileType", fileType.value);
+      var fileType = $('#file-type').val();
+      formData.append("fileType", fileType);
+      // console.log(fileType)
+      if (fileType === "file") {
         formData.append("file", fileInput.value.files[0]);
+        // console.log(fileInput.value.files[0])
+        formData.append("hash", hash.value.value);
+        // console.log(hash.value.value)
+        // console.log($("#contractName").val())
         formData.append("contractName", $("#contractName").val());
-      } else if (fileType.value === "etherscan" || fileType.value === "github") {
+      } else if (fileType === "etherscan" || fileType === "github") {
         // Code to handle address upload
-        formData.append("fileType", fileType.value);
-        formData.append("address", address.value);
-        hash.value = address.value
+        var address = $("#address").val()
+        // console.log(address)
+        formData.append("address", address);
+        formData.append("hash", address);
+        formData.append("contractName", address);
+        hash.value = address
         $("#hash-input").val(hash.value);
-        console.log(hash.value, "111")
+        // console.log(hash.value)
       }
 
-      // axios
-      //   .post(confs.backendsURL + "/audit/upload", formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((response) => {
-      //     console.log("File uploaded successfully");
-      //     console.log(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error uploading file");
-      //   });
-
+      isLoading.value = true; // show loading animation while processing
       try {
         const response = await axios.post(confs.backendsURL + "/audit/upload", formData, {
           headers: {
@@ -178,7 +171,7 @@ export default {
           }
         }, pollingInterval);
 
-        isLoading.value = true; // show loading animation while processing
+        
       } catch (error) {
         console.log("Error uploading file:", error);
       }
@@ -228,6 +221,7 @@ export default {
       const files = event.target.files;
       const file = files[0];
       const fileHash = await calculateFileHash(file);
+      
       hash.value = fileHash;
       console.log(hash.value);
       $("#hash-input").val(fileHash);
@@ -263,12 +257,10 @@ export default {
       onFileSelected,
       hash,
       isLoading,
-      fileType,
       onSelectChange,
       showFileInput,
       showEtherscanInput,
       showGithubInput,
-      address
     };
   },
 };

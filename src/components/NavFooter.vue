@@ -25,11 +25,11 @@
                 {{ $t("message.navFooter.navBarAuditTitle") }}
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link to="/search?types=papers">
                 {{ $t("message.navFooter.navBarPapersTitle") }}
               </router-link>
-            </li>
+            </li> -->
 <!--            <li>-->
 <!--              <div class="dropdown" style="padding-top: 9px">-->
 <!--                <button id="btn-product-menu" class="btn-link" data-toggle="dropdown"-->
