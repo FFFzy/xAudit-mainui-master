@@ -8,11 +8,11 @@
             <span class="col-md-6" style="padding-left: 0">
               {{ $t("message.labelcloud.labelcloudIntro") }}
             </span>
-            <span class="col-md-6" style="padding-right: 0">
+            <!-- <span class="col-md-6" style="padding-right: 0">
               <img src="../assets/img/labelcloud.png"
                    class="img-responsive img-rounded" alt=""
                    style="background: white">
-            </span>
+            </span> -->
           </p>
           <a class="btn btn-primary btn-lg"
              href="/cloud" role="button"
